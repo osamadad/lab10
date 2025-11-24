@@ -3,6 +3,8 @@ package com.tuwaiq.lab10_jobseeking.Controller;
 import Api.ApiResponse;
 import com.tuwaiq.lab10_jobseeking.Models.JobApplication;
 import com.tuwaiq.lab10_jobseeking.Service.JobApplicationService;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -27,8 +29,8 @@ public class JobApplicationController {
         }
     }
 
-    @PostMapping("/apply")
-    public ResponseEntity<?> applyForJob(Integer userId, JobApplication jobApplication, Errors errors) {
+    @PostMapping("/apply/{userId}")
+    public ResponseEntity<?> applyForJob(@PathVariable Integer userId, @RequestBody @Valid JobApplication jobApplication, Errors errors) {
         if (errors.hasErrors()) {
             return ResponseEntity.status(400).body(new ApiResponse(errors.getFieldError().getDefaultMessage()));
         } else {
@@ -49,8 +51,8 @@ public class JobApplicationController {
         }
     }
 
-    @DeleteMapping("/withdraw")
-    public ResponseEntity<?> WithdrawJobApplication(Integer userId, Integer applicationId){
+    @DeleteMapping("/withdraw/{userId}/{applicationId}")
+    public ResponseEntity<?> WithdrawJobApplication(@PathVariable Integer userId,@PathVariable Integer applicationId){
         String value = jobApplicationService.withdrawJobApplication(userId,applicationId);
         switch (value) {
             case "ok":

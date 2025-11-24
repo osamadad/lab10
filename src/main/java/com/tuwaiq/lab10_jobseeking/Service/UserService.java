@@ -47,11 +47,7 @@ public class UserService {
     }
 
     public Boolean checkUserMatchApplication(Integer userId, Integer applicationUserId){
-        if (userId.equals(applicationUserId)){
-            return true;
-        }else {
-            return false;
-        }
+        return userId.equals(applicationUserId);
     }
 
     public User checkUserExist(Integer UserId) {
@@ -64,10 +60,6 @@ public class UserService {
     }
 
     public Boolean checkUserRole(User user, String role) {
-        if (user.getRole().equalsIgnoreCase(role)) {
-            return true;
-        } else {
-            return false;
-        }
+        return user.getRole().equalsIgnoreCase(role);
     }
 }

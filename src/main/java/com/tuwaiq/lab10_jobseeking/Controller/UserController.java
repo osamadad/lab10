@@ -3,6 +3,7 @@ package com.tuwaiq.lab10_jobseeking.Controller;
 import Api.ApiResponse;
 import com.tuwaiq.lab10_jobseeking.Models.User;
 import com.tuwaiq.lab10_jobseeking.Service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addUser(User user, Errors errors){
+    public ResponseEntity<?> addUser(@RequestBody @Valid User user, Errors errors){
         if (errors.hasErrors()){
             return ResponseEntity.status(400).body(new ApiResponse(errors.getFieldError().getDefaultMessage()));
         }else {
@@ -37,8 +38,8 @@ public class UserController {
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> updateUser(Integer id, User user, Errors errors){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Integer id, @RequestBody @Valid User user, Errors errors){
         if (errors.hasErrors()){
             return ResponseEntity.status(400).body(new ApiResponse(errors.getFieldError().getDefaultMessage()));
         }
@@ -49,8 +50,8 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteUser(Integer id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Integer id){
         if (userService.deleteUser(id)){
             return ResponseEntity.status(200).body(new ApiResponse("The user have been deleted successfully"));
         }else {
