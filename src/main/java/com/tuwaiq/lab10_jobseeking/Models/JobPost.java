@@ -32,5 +32,5 @@ public class JobPost {
     @Column(columnDefinition = "int not null")
     private Integer salary;
     @DateTimeFormat(pattern = "yyyy-MM-dd@HH-mm-ss")
-    private LocalDateTime postingDate;
+    private LocalDateTime postingDate=LocalDateTime.now();
 }
