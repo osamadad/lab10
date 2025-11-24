@@ -3,11 +3,13 @@ package com.tuwaiq.lab10_jobseeking.Controller;
 import Api.ApiResponse;
 import com.tuwaiq.lab10_jobseeking.Models.JobPost;
 import com.tuwaiq.lab10_jobseeking.Service.JobPostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -27,11 +29,12 @@ public class JobPostController {
         }
     }
 
-    @PutMapping("/add")
-    public ResponseEntity<?> addJobPost(Integer userId, JobPost jobPost, Errors errors) {
+    @PostMapping("/add/{userId}")
+    public ResponseEntity<?> addJobPost(@PathVariable Integer userId, @RequestBody @Valid JobPost jobPost, Errors errors) {
         if (errors.hasErrors()) {
             return ResponseEntity.status(400).body(new ApiResponse(errors.getFieldError().getDefaultMessage()));
         } else {
+            jobPost.setPostingDate(LocalDateTime.now());
             String value = jobPostService.addJobPost(userId, jobPost);
             return switch (value) {
                 case "ok" -> ResponseEntity.status(200).body(new ApiResponse("The job have been posted successfully"));
@@ -44,8 +47,8 @@ public class JobPostController {
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> updateJobPost(Integer userId, Integer jobPostId, JobPost jobPost, Errors errors) {
+    @PutMapping("/update/{userId}/{jobPostId}")
+    public ResponseEntity<?> updateJobPost(@PathVariable Integer userId, @PathVariable Integer jobPostId,@RequestBody @Valid JobPost jobPost, Errors errors) {
         if (errors.hasErrors()) {
             return ResponseEntity.status(400).body(new ApiResponse(errors.getFieldError().getDefaultMessage()));
         } else {
@@ -64,8 +67,8 @@ public class JobPostController {
         }
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteJobPost(Integer userId, Integer jobPostId){
+    @DeleteMapping("/delete/{userId}/{jobPostId}")
+    public ResponseEntity<?> deleteJobPost(@PathVariable Integer userId,@PathVariable Integer jobPostId){
         String value = jobPostService.deleteJobPost(userId,jobPostId);
         return switch (value) {
             case "ok" ->

@@ -15,7 +15,7 @@ public class JobPostService {
     private final JobPostRepository jobPostRepository;
     private final UserService userService;
 
-    public List<?> getJobPosts(){
+    public List<JobPost> getJobPosts(){
         return jobPostRepository.findAll();
     }
 
@@ -33,11 +33,11 @@ public class JobPostService {
         }
     }
 
-    public String updateJobPost(Integer userId, Integer id, JobPost jobPost){
+    public String updateJobPost(Integer userId, Integer jobPostId, JobPost jobPost){
         User user=userService.checkUserExist(userId);
         if (user!=null){
             if (userService.checkUserRole(user,"EMPLOYER")){
-                JobPost oldJobPost= jobPostRepository.getById(id);
+                JobPost oldJobPost= jobPostRepository.getById(jobPostId);
                 if (oldJobPost==null){
                     return "jobPost id error";
                 }
