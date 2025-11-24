@@ -13,7 +13,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public List<?> getUsers() {
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 

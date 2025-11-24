@@ -18,7 +18,7 @@ public class JobApplicationService {
     private final JobPostService jobPostService;
     private final UserService userService;
 
-    public List<?> getJobApplications() {
+    public List<JobApplication> getJobApplications() {
         return jobApplicationRepository.findAll();
     }
 
@@ -53,6 +53,7 @@ public class JobApplicationService {
                 if (user != null) {
                     if (userService.checkUserRole(user, "JOB_SEEKER")) {
                         jobApplicationRepository.delete(jobApplication);
+                        return "ok";
                     } else {
                         return "User role error";
                     }
